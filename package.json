@@ -4,12 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "dev": "npm-run-all -s generate webpackDev",
-    "webpackDev": "webpack serve",
-    "build": "npm-run-all -s generate webpackBuild",
-    "webpackBuild": "webpack",
-    "generate": "babel-node --presets=@babel/preset-react,@babel/preset-env generateHtml.js",
-    "previewDist": "node previewDist",
+    "dev": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -40,6 +35,6 @@
     "use-immer": "^0.6.0",
     "webpack": "^5.47.1",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^4.6.0"
   }
 }

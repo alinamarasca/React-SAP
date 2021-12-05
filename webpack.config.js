@@ -13,10 +13,10 @@ module.exports = {
     port: 3000,
     static: path.join(__dirname, "app"),
     hot: true,
-    historyApiFallback: { index: "index.html" },
-    static: {
-      directory: path.join(__dirname, "app")
-    }
+    historyApiFallback: { index: "index.html" }
+    // static: {
+    //   directory: path.join(__dirname, "app")
+    // }
   },
   module: {
     rules: [

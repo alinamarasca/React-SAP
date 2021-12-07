@@ -1,6 +1,8 @@
 const path = require("path");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 module.exports = {
+  // target: "node",
   entry: "./app/Main.js",
   output: {
     publicPath: "/",
@@ -34,5 +36,14 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  // resolve: {
+  //   fallback: {
+  //     zlib: require.resolve("browserify-zlib"),
+  //     path: require.resolve("path-browserify"),
+  //     stream: require.resolve("stream-browserify")
+  //   }
+  // }
+
+  plugins: [new NodePolyfillPlugin()]
 };

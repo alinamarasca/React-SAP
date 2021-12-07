@@ -1,9 +1,11 @@
-import React from "react";
-import Container from "./Container";
-
+import React, { useEffect } from "react";
+import Page from "./Page";
 function About() {
+  //a - function you want to run, b - list of dependencies I watch to see when they change, so a is called when teh change happens
+  // [] - only first time
+
   return (
-    <Container>
+    <Page title="About Us">
       <h2>About Us</h2>
       <p className="lead text-muted">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
@@ -25,7 +27,7 @@ function About() {
         nobis provident quo dolorum sapiente temporibus facere non repellendus
         consequatur cupiditate!
       </p>
-    </Container>
+    </Page>
   );
 }
 

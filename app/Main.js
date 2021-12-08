@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import ReactDOM from "react-dom";
+import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:8080";
+import StateContext from "./StateContext";
+import DispatchContext from "./DispatchContext";
 //components
 import Header from "./components/Header";
 import HomeGuest from "./components/HomeGuest";
@@ -13,43 +16,56 @@ import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/flashMessages";
-import ExampleContext from "./ExampleContext";
 
 function Main() {
-  const [loggedIn, setLoggedIn] = useState(
-    Boolean(localStorage.getItem("complexAppToken"))
-  );
-  const [flashMessages, setFlashMessages] = useState([]);
+  const initialState = {
+    loggedIn: Boolean(localStorage.getItem("complexAppToken")),
+    flashMessages: []
+  };
 
-  function addFlashMessage(message) {
-    setFlashMessages(prev => prev.concat(message));
+  function ourReducer(draft, action) {
+    switch (action.type) {
+      case "login":
+        draft.loggedIn = true;
+        return;
+      case "logout":
+        draft.loggedIn = false;
+        return;
+      case "addFlashMessage":
+        draft.flashMessages.push(action.value);
+        return;
+    }
   }
 
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
   return (
-    <ExampleContext.Provider value={{ addFlashMessage, setLoggedIn }}>
-      <BrowserRouter>
-        <FlashMessages messages={flashMessages} />
-        <Header loggedIn={loggedIn} />
-        <Switch>
-          <Route path="/" exact>
-            {loggedIn ? <Home /> : <HomeGuest />}
-          </Route>
-          <Route path="/post/:id">
-            <ViewSinglePost />
-          </Route>
-          <Route path="/create-post">
-            <CreatePost />
-          </Route>
-          <Route path="/about-us" exact>
-            <About />
-          </Route>
-          <Route path="/terms" exact>
-            <Terms />
-          </Route>
-        </Switch>
-        <Footer />
-      </BrowserRouter>
-    </ExampleContext.Provider>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        <BrowserRouter>
+          <FlashMessages messages={state.flashMessages} />
+          <Header />
+          <Switch>
+            <Route path="/" exact>
+              {state.loggedIn ? <Home /> : <HomeGuest />}
+            </Route>
+            <Route path="/post/:id">
+              <ViewSinglePost />
+            </Route>
+            <Route path="/create-post">
+              <CreatePost />
+            </Route>
+            <Route path="/about-us" exact>
+              <About />
+            </Route>
+            <Route path="/terms" exact>
+              <Terms />
+            </Route>
+          </Switch>
+          <Footer />
+        </BrowserRouter>
+      </DispatchContext.Provider>
+    </StateContext.Provider>
   );
 }
 
